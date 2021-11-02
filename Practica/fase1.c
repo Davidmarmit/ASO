@@ -6,4 +6,9 @@
 #include <linux/kobject.h>
 #include <linux/time.h>
 
+int main(){
+	printf("Hola\n");
+
+	return 0;
+}
 
