@@ -187,7 +187,7 @@ static void __exit ebbgpio_exit(void){
 static irq_handler_t ebbgpio_irq1_handler(unsigned int irq, void *dev_id, struct pt_regs *regs){
    ledOn1 = 1;                          // Invert the LED state on each button press
    gpio_set_value(gpioLED1, ledOn1);          // Set the physical LED accordingly
-   printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButton));
+   printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonA1));
    numberPressesA1++;                         // Global counter, will be outputted when the module is unloaded
    return (irq_handler_t) IRQ_HANDLED;      // Announce that the IRQ has been handled correctly
 }
