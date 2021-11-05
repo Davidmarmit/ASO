@@ -23,7 +23,10 @@ static bool	    ledOn2 = 0;
 
 
 /// Function prototype for the custom IRQ handler function -- see below for the implementation
-static irq_handler_t  ebbgpio_irq_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
+static irq_handler_t  ebbgpio_irq1_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
+static irq_handler_t  ebbgpio_irq2_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
+static irq_handler_t  ebbgpio_irq3_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
+static irq_handler_t  ebbgpio_irq4_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
 
 /** @brief The LKM initialization function
  *  The static keyword restricts the visibility of the function to within this C file. The __init
