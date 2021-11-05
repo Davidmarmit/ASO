@@ -4,6 +4,8 @@
 #include <linux/gpio.h>                 // Required for the GPIO functions
 #include <linux/interrupt.h>            // Required for the IRQ code
 
+MODULE_LICENSE("");
+
 static unsigned int gpioLED1 = 36;       ///< hard coding the LED gpio for this example to P9_23 (GPIO49)
 static unsigned int gpioLED2 = 38;
 static unsigned int gpioButtonA1 = 37;   ///< hard coding the button gpio for this example to P9_27 (GPIO115)
@@ -203,7 +205,7 @@ static irq_handler_t ebbgpio_irq2_handler(unsigned int irq, void *dev_id, struct
 static irq_handler_t ebbgpio_irq3_handler(unsigned int irq, void *dev_id, struct pt_regs *regs){
    ledOn2 = 1;                          // Invert the LED state on each button press
    gpio_set_value(gpioLED2, ledOn2);          // Set the physical LED accordingly
-   printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButton));
+   printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonB1));
    numberPressesB1++;                         // Global counter, will be outputted when the module is unloaded
    return (irq_handler_t) IRQ_HANDLED;      // Announce that the IRQ has been handled correctly
 }
@@ -211,7 +213,7 @@ static irq_handler_t ebbgpio_irq3_handler(unsigned int irq, void *dev_id, struct
 static irq_handler_t ebbgpio_irq4_handler(unsigned int irq, void *dev_id, struct pt_regs *regs){
    ledOn2 = 0;                          // Invert the LED state on each button press
    gpio_set_value(gpioLED2, ledOn2);          // Set the physical LED accordingly
-   printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButton));
+   printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonB2));
    numberPressesB2++;                         // Global counter, will be outputted when the module is unloaded
    return (irq_handler_t) IRQ_HANDLED;      // Announce that the IRQ has been handled correctly
 }
