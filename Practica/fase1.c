@@ -4,7 +4,7 @@
 #include <linux/gpio.h>                 // Required for the GPIO functions
 #include <linux/interrupt.h>            // Required for the IRQ code
 
-MODULE_LICENSE("");
+MODULE_LICENSE("GPL");
 
 static unsigned int gpioLED1 = 36;       ///< hard coding the LED gpio for this example to P9_23 (GPIO49)
 static unsigned int gpioLED2 = 38;
@@ -20,15 +20,15 @@ static unsigned int numberPressesA1 = 0;  ///< For information, store the number
 static unsigned int numberPressesA2 = 0;
 static unsigned int numberPressesB1 = 0;
 static unsigned int numberPressesB2 = 0;
-static bool	    ledOn1 = 0;          ///< Is the LED on or off? Used to invert its state (off by default)
-static bool	    ledOn2 = 0;
+static bool ledOn1 = 0;          ///< Is the LED on or off? Used to invert its state (off by default)
+static bool ledOn2 = 0;
 
 
 /// Function prototype for the custom IRQ handler function -- see below for the implementation
-static irq_handler_t  ebbgpio_irq1_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
-static irq_handler_t  ebbgpio_irq2_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
-static irq_handler_t  ebbgpio_irq3_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
-static irq_handler_t  ebbgpio_irq4_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
+static irq_handler_t ebbgpio_irq1_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
+static irq_handler_t ebbgpio_irq2_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
+static irq_handler_t ebbgpio_irq3_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
+static irq_handler_t ebbgpio_irq4_handler(unsigned int irq, void *dev_id, struct pt_regs *regs);
 
 /** @brief The LKM initialization function
  *  The static keyword restricts the visibility of the function to within this C file. The __init
@@ -187,7 +187,7 @@ static void __exit ebbgpio_exit(void){
  *  return returns IRQ_HANDLED if successful -- should return IRQ_NONE otherwise.
  */
 static irq_handler_t ebbgpio_irq1_handler(unsigned int irq, void *dev_id, struct pt_regs *regs){
-   ledOn1 = 1;                          // Invert the LED state on each button press
+   ledOn1 = true;                          // Invert the LED state on each button press
    gpio_set_value(gpioLED1, ledOn1);          // Set the physical LED accordingly
    printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonA1));
    numberPressesA1++;                         // Global counter, will be outputted when the module is unloaded
@@ -195,7 +195,7 @@ static irq_handler_t ebbgpio_irq1_handler(unsigned int irq, void *dev_id, struct
 }
 
 static irq_handler_t ebbgpio_irq2_handler(unsigned int irq, void *dev_id, struct pt_regs *regs){
-   ledOn1 = 0;                          // Invert the LED state on each button press
+   ledOn1 = false;                          // Invert the LED state on each button press
    gpio_set_value(gpioLED1, ledOn1);          // Set the physical LED accordingly
    printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonA2));
    numberPressesA2++;                         // Global counter, will be outputted when the module is unloaded
@@ -203,7 +203,7 @@ static irq_handler_t ebbgpio_irq2_handler(unsigned int irq, void *dev_id, struct
 }
 
 static irq_handler_t ebbgpio_irq3_handler(unsigned int irq, void *dev_id, struct pt_regs *regs){
-   ledOn2 = 1;                          // Invert the LED state on each button press
+   ledOn2 = true;                          // Invert the LED state on each button press
    gpio_set_value(gpioLED2, ledOn2);          // Set the physical LED accordingly
    printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonB1));
    numberPressesB1++;                         // Global counter, will be outputted when the module is unloaded
@@ -211,7 +211,7 @@ static irq_handler_t ebbgpio_irq3_handler(unsigned int irq, void *dev_id, struct
 }
 
 static irq_handler_t ebbgpio_irq4_handler(unsigned int irq, void *dev_id, struct pt_regs *regs){
-   ledOn2 = 0;                          // Invert the LED state on each button press
+   ledOn2 = false;                          // Invert the LED state on each button press
    gpio_set_value(gpioLED2, ledOn2);          // Set the physical LED accordingly
    printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonB2));
    numberPressesB2++;                         // Global counter, will be outputted when the module is unloaded
