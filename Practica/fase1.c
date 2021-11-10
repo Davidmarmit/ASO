@@ -6,12 +6,12 @@
 
 MODULE_LICENSE("GPL");
 
-static unsigned int gpioLED1 = 36;       ///< hard coding the LED gpio for this example to P9_23 (GPIO49)
-static unsigned int gpioLED2 = 38;
-static unsigned int gpioButtonA1 = 37;   ///< hard coding the button gpio for this example to P9_27 (GPIO115)
-static unsigned int gpioButtonA2 = 35;
-static unsigned int gpioButtonB1 = 33;
-static unsigned int gpioButtonB2 = 40;
+static unsigned int gpioLED1 = 16;       ///< hard coding the LED gpio for this example to P9_23 (GPIO49)
+static unsigned int gpioLED2 = 20;
+static unsigned int gpioButtonA1 = 26;   ///< hard coding the button gpio for this example to P9_27 (GPIO115)
+static unsigned int gpioButtonA2 = 19;
+static unsigned int gpioButtonB1 = 13;
+static unsigned int gpioButtonB2 = 21;
 static unsigned int irqNumberA1;          ///< Used to share the IRQ number within this file
 static unsigned int irqNumberA2;
 static unsigned int irqNumberB1;
@@ -21,7 +21,7 @@ static unsigned int numberPressesA2 = 0;
 static unsigned int numberPressesB1 = 0;
 static unsigned int numberPressesB2 = 0;
 static bool ledOn1 = 0;          ///< Is the LED on or off? Used to invert its state (off by default)
-static bool ledOn2 = 0;
+static bool	ledOn2 = 0;
 
 
 /// Function prototype for the custom IRQ handler function -- see below for the implementation
