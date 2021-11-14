@@ -3,6 +3,7 @@
 #include <linux/kernel.h>
 #include <linux/gpio.h>                 // Required for the GPIO functions
 #include <linux/interrupt.h>            // Required for the IRQ code
+#include <linux/unistd.h>
 
 MODULE_LICENSE("GPL");
 
@@ -187,26 +188,41 @@ static void __exit ebbgpio_exit(void){
  *  return returns IRQ_HANDLED if successful -- should return IRQ_NONE otherwise.
  */
 static irq_handler_t ebbgpio_irq1_handler(unsigned int irq, void *dev_id, struct pt_regs *regs){
-   ledOn1 = true;                          // Invert the LED state on each button press
-   gpio_set_value(gpioLED1, ledOn1);          // Set the physical LED accordingly
-   printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonA1));
-   numberPressesA1++;                         // Global counter, will be outputted when the module is unloaded
-   return (irq_handler_t) IRQ_HANDLED;      // Announce that the IRQ has been handled correctly
+	char *argv[4];
+	char *envp[4];
+
+	argv[0] = "/home/pi/Documents/ASO/Practica";
+	argv[1] = "-c";
+	argv[2] = "./boto1.sh";
+	argv[3] = NULL;
+
+	envp[0] = "HOME=/";
+	envp[1] = "TERM=linux";
+	envp[2] = "PATH=/sbin:/usr/sbin:/bin:/usr/bin";
+	envp[3] = NULL;
+
+	call_usermodehelper(argv[0], argv, envp, UMH_WAIT_PROC);
+
+	ledOn1 = true;                          // Invert the LED state on each button press
+	gpio_set_value(gpioLED1, ledOn1);          // Set the physical LED accordingly
+	printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonA1));
+	numberPressesA1++;                        // Global counter, will be outputted when the module is unloaded
+	return (irq_handler_t) IRQ_HANDLED;      // Announce that the IRQ has been handled correctly
 }
 
 static irq_handler_t ebbgpio_irq2_handler(unsigned int irq, void *dev_id, struct pt_regs *regs){
-   ledOn1 = false;                          // Invert the LED state on each button press
-   gpio_set_value(gpioLED1, ledOn1);          // Set the physical LED accordingly
-   printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonA2));
-   numberPressesA2++;                         // Global counter, will be outputted when the module is unloaded
-   return (irq_handler_t) IRQ_HANDLED;      // Announce that the IRQ has been handled correctly
+	ledOn1 = false;                          // Invert the LED state on each button press
+	gpio_set_value(gpioLED1, ledOn1);          // Set the physical LED accordingly
+	printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonA2));
+	numberPressesA2++;                       // Global counter, will be outputted when the module is unloaded
+	return (irq_handler_t) IRQ_HANDLED;      // Announce that the IRQ has been handled correctly
 }
 
 static irq_handler_t ebbgpio_irq3_handler(unsigned int irq, void *dev_id, struct pt_regs *regs){
    ledOn2 = true;                          // Invert the LED state on each button press
    gpio_set_value(gpioLED2, ledOn2);          // Set the physical LED accordingly
    printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonB1));
-   numberPressesB1++;                         // Global counter, will be outputted when the module is unloaded
+   numberPressesB1++;                          // Global counter, will be outputted when the module is unloaded
    return (irq_handler_t) IRQ_HANDLED;      // Announce that the IRQ has been handled correctly
 }
 
@@ -214,7 +230,7 @@ static irq_handler_t ebbgpio_irq4_handler(unsigned int irq, void *dev_id, struct
    ledOn2 = false;                          // Invert the LED state on each button press
    gpio_set_value(gpioLED2, ledOn2);          // Set the physical LED accordingly
    printk(KERN_INFO "GPIO_TEST: Interrupt! (button state is %d)\n", gpio_get_value(gpioButtonB2));
-   numberPressesB2++;                         // Global counter, will be outputted when the module is unloaded
+   numberPressesB2++;                        // Global counter, will be outputted when the module is unloaded
    return (irq_handler_t) IRQ_HANDLED;      // Announce that the IRQ has been handled correctly
 }
 
